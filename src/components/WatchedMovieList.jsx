@@ -1,10 +1,9 @@
-import { tempMovieData } from "./App";
 import WatchedMovie from "./WatchedMovie";
 
-const WatchedMovieList = () => {
+const WatchedMovieList = ({ watchedMovies }) => {
   return (
     <ul className="list">
-      {tempMovieData?.map((movie) => (
+      {watchedMovies?.map((movie) => (
         <WatchedMovie movie={movie} key={movie.imdbID} />
       ))}
     </ul>

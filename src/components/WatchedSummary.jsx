@@ -1,9 +1,13 @@
 import { average } from "../helper";
 
-const WatchedSummary = ({ watched }) => {
-  const avgImdbRating = average(watched?.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched?.map((movie) => movie.userRating));
-  const avgRuntime = average(watched?.map((movie) => movie.runtime));
+const WatchedSummary = ({ watchedMovies }) => {
+  const avgImdbRating = average(
+    watchedMovies?.map((movie) => movie.imdbRating)
+  );
+  const avgUserRating = average(
+    watchedMovies?.map((movie) => movie.userRating)
+  );
+  const avgRuntime = average(watchedMovies?.map((movie) => movie.runtime));
 
   return (
     <div className="summary">
@@ -11,7 +15,7 @@ const WatchedSummary = ({ watched }) => {
       <div>
         <p>
           <span>#️⃣</span>
-          <span>{watched?.length} movies</span>
+          <span>{watchedMovies?.length} movies</span>
         </p>
         <p>
           <span>⭐️</span>
