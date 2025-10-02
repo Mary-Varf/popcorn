@@ -1,5 +1,4 @@
 const WatchedMovie = ({ movie }) => {
-  console.log(movie);
   return (
     <li>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />

@@ -1,6 +1,6 @@
 import Main from "./Main";
 import Navbar from "./Navbar";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Logo from "./Logo";
 import Search from "./Search";
 import NavResult from "./NavResult";
@@ -8,8 +8,6 @@ import MovieList from "./MovieList";
 import WatchedMovieList from "./WatchedMovieList";
 import WatchedSummary from "./WatchedSummary";
 import Box from "./Box";
-import Loader from "./Loader";
-import ErrorMessage from "./ErrorMessage";
 
 export const tempMovieData = [
   {
@@ -58,41 +56,9 @@ const tempWatchedData = [
   },
 ];
 
-const KEY = "c87bbec9";
-
 export default function App() {
-  const [movies, setMovies] = useState([]);
-  const [watchedMovies, setWatchedMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const query = "sdsdf2336";
-
-  const fetchMovies = async () => {
-    try {
-      setIsLoading(true);
-      const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-      );
-
-      if (!res.ok)
-        throw new Error("Something whent wrong with fetching movies.");
-
-      const data = await res.json();
-      if (data.Response === "False") throw new Error("Movie not found");
-      setMovies(data.Search);
-    } catch (err) {
-      console.log(err);
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  //on mount
-  useEffect(() => {
-    fetchMovies();
-  }, []);
+  const [movies, setMovies] = useState(tempMovieData);
+  const [watchedMovies, setWatchedMovies] = useState(tempWatchedData);
 
   return (
     <>
@@ -103,9 +69,7 @@ export default function App() {
       </Navbar>
       <Main>
         <Box>
-          {isLoading && <Loader />}
-          {isLoading && !error && <MovieList movies={movies} />}
-          {error && <ErrorMessage message={error} />}
+          <MovieList movies={movies} />
         </Box>
         <Box>
           <WatchedSummary watchedMovies={watchedMovies} />
