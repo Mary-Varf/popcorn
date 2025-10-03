@@ -1,21 +1,22 @@
 const WatchedMovie = ({ movie, onDeleteMovie }) => {
-  console.log(movie);
   return (
     <li>
       <img src={movie.poster} alt={`${movie.title} poster`} />
       <h3>{movie.title}</h3>
       <div>
-        <p>
-          <span>⭐️</span>
-          <span>{movie.imdbRating}</span>
-        </p>
-        <p>
-          <span>🌟</span>
-          <span>{movie.userRating}</span>
-        </p>
-        {Number.isNaN(+movie.runtime) ? (
-          ""
-        ) : (
+        {!Number.isNaN(+movie.imdbRating) && (
+          <p>
+            <span>⭐️</span>
+            <span>{movie.imdbRating}</span>
+          </p>
+        )}
+        {!Number.isNaN(+movie.userRating) && (
+          <p>
+            <span>🌟</span>
+            <span>{movie.userRating}</span>
+          </p>
+        )}
+        {!Number.isNaN(+movie.runtime) && (
           <p>
             <span>⏳</span>
             <span>

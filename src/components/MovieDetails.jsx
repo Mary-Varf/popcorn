@@ -1,14 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { KEY } from "../helper";
 import StarRating from "./StarRating";
 import Loader from "./Loader";
 import ErrorMessage from "./ErrorMessage";
+import { useKey } from "../useKey";
 
 const MovieDetails = ({ movieId, onCloseMovie, onWatched, watched }) => {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [userRating, setUserrating] = useState(0);
+
+  const countRef = useRef(0);
+
+  useEffect(() => {
+    if (userRating) countRef.current = countRef.current + 1;
+  }, [userRating]);
 
   const { Title: title } = movie;
 
@@ -24,8 +31,6 @@ const MovieDetails = ({ movieId, onCloseMovie, onWatched, watched }) => {
       const res = await fetch(
         `http://www.omdbapi.com/?apikey=${KEY}&i=${movieId}`
       );
-
-      console.log(res);
       if (!res.ok)
         throw new Error("Something whent wrong with fetching movie.");
 
@@ -49,6 +54,7 @@ const MovieDetails = ({ movieId, onCloseMovie, onWatched, watched }) => {
       imdbRating: Number(movie?.imdbRating ?? 0),
       runtime: movie.Runtime?.split(" ").at(0),
       userRating,
+      countRatingDecisions: countRef.current,
     };
     onWatched(newWatchedMovie);
     onCloseMovie();
@@ -72,20 +78,7 @@ const MovieDetails = ({ movieId, onCloseMovie, onWatched, watched }) => {
     };
   }, [title]);
 
-  const handleEscape = (e) => {
-    if (e.code === "Escape") {
-      console.log("ddf");
-      onCloseMovie();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [title]);
+  useKey("Escape", onCloseMovie);
 
   return (
     movie?.Title && (
